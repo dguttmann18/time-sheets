@@ -1,7 +1,7 @@
 package com.psybergate.mentoring.cloud.time.service;
 
-import com.psybergate.mentoring.cloud.time.dto.ProjectRequest;
-import com.psybergate.mentoring.cloud.time.dto.ProjectResponse;
+import com.psybergate.mentoring.cloud.time.dto.request.ProjectRequest;
+import com.psybergate.mentoring.cloud.time.dto.response.ProjectResponse;
 
 import java.util.List;
 

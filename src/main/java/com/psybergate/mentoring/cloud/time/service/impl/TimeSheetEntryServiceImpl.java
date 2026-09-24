@@ -1,7 +1,7 @@
 package com.psybergate.mentoring.cloud.time.service.impl;
 
-import com.psybergate.mentoring.cloud.time.dto.TimeSheetEntryRequest;
-import com.psybergate.mentoring.cloud.time.dto.TimeSheetEntryResponse;
+import com.psybergate.mentoring.cloud.time.dto.request.TimeSheetEntryRequest;
+import com.psybergate.mentoring.cloud.time.dto.response.TimeSheetEntryResponse;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
 
 import java.time.LocalDate;
