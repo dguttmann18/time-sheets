@@ -1,7 +1,7 @@
 package com.psybergate.mentoring.cloud.time.mapper;
 
-import com.psybergate.mentoring.cloud.time.dto.ProjectRequest;
-import com.psybergate.mentoring.cloud.time.dto.ProjectResponse;
+import com.psybergate.mentoring.cloud.time.dto.request.ProjectRequest;
+import com.psybergate.mentoring.cloud.time.dto.response.ProjectResponse;
 import com.psybergate.mentoring.cloud.time.entity.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
