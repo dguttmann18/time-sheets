@@ -3,10 +3,12 @@ package com.psybergate.mentoring.cloud.time.service.impl;
 import com.psybergate.mentoring.cloud.time.dto.request.TimeSheetEntryRequest;
 import com.psybergate.mentoring.cloud.time.dto.response.TimeSheetEntryResponse;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
 
   @Override

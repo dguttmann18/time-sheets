@@ -6,6 +6,8 @@ import com.psybergate.mentoring.cloud.time.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/project")
@@ -28,5 +30,9 @@ public class ProjectController {
     return service.get(id);
   }
 
+  @GetMapping("/all")
+  public List<ProjectResponse> getAllProjects() {
+    return service.getAll();
+  }
 
 }

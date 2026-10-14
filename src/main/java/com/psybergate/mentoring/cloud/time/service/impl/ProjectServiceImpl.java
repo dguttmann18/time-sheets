@@ -23,12 +23,14 @@ public class ProjectServiceImpl implements ProjectService {
   private final ProjectMapper mapper;
 
   @Override
+  @Transactional
   public void save(ProjectRequest project) {
     Project entity = mapper.toEntity(project);
     repository.save(entity);
   }
 
   @Override
+  @Transactional
   public void update(ProjectRequest project, Long id) {
     Project entity = repository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + id + "} not found"));
@@ -38,6 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
 
   }
