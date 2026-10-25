@@ -51,8 +51,11 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
-
+    TimeSheetEntry entity = repository.findByIdAndActiveTrue(id)
+            .orElseThrow(() -> new EntityNotFoundException("Time sheet entry with id{" + id + "} not found"));
+    entity.setActive(false);
   }
 
   @Override
@@ -72,6 +75,6 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
 
   @Override
   public List<TimeSheetEntryResponse> getAllOnDate(LocalDate date) {
-    return List.of();
+    return mapper.toResponseList(repository.findByActiveTrueAndDateOfEntry(date));
   }
 }
