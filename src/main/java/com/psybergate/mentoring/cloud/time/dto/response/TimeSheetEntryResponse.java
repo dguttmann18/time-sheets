@@ -27,4 +27,6 @@ public class TimeSheetEntryResponse {
 
   private boolean billable;
 
+  private String description;
+
 }

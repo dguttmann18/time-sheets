@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface TimeSheetEntryService {
 
-  TimeSheetEntryResponse save(TimeSheetEntryRequest TimeSheetEntry);
+  TimeSheetEntryResponse save(TimeSheetEntryRequest timeSheetEntry);
 
-  TimeSheetEntryResponse update(TimeSheetEntryRequest TimeSheetEntry, Long id);
+  TimeSheetEntryResponse update(TimeSheetEntryRequest timeSheetEntry, Long id);
 
   void delete(Long id);
 

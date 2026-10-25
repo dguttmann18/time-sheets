@@ -7,13 +7,13 @@ import com.psybergate.mentoring.cloud.time.mapper.ProjectMapper;
 import com.psybergate.mentoring.cloud.time.repository.ProjectRepository;
 import com.psybergate.mentoring.cloud.time.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Data
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
@@ -31,12 +31,11 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
-  public void update(ProjectRequest project, Long id) {
+  public void update(ProjectRequest request, Long id) {
     Project entity = repository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + id + "} not found"));
 
-    mapper.updateEntityFromRequest(project, entity);
-    repository.save(entity);
+    mapper.updateEntityFromRequest(request, entity);
   }
 
   @Override

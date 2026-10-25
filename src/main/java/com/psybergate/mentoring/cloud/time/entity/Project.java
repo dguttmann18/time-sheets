@@ -19,4 +19,6 @@ public class Project extends BaseEntity {
 
   private String description;
 
+  private String client;
+
 }

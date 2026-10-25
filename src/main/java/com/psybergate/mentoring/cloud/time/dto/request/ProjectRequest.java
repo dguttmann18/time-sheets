@@ -9,4 +9,6 @@ public class ProjectRequest {
 
   private String description;
 
+  private String client;
+
 }
