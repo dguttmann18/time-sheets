@@ -21,4 +21,5 @@ public class ProjectResponse {
 
   private String description;
 
+  private String client;
 }

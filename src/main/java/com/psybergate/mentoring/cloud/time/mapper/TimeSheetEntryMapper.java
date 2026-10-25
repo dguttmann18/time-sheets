@@ -15,6 +15,7 @@ public interface TimeSheetEntryMapper {
   @Mapping(target = "created", ignore = true)
   @Mapping(target = "updated", ignore = true)
   @Mapping(target = "active", ignore = true)
+  @Mapping(target = "project", ignore = true)
   TimeSheetEntry toEntity(TimeSheetEntryRequest request);
 
   @Mapping(target = "id", ignore = true)

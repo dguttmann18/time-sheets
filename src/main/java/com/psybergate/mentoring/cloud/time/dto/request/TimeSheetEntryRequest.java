@@ -10,10 +10,12 @@ public class TimeSheetEntryRequest {
 
   private LocalDate dateOfEntry;
 
-  private Project project;
+  private Long projectId;
 
   private double hours;
 
   private boolean billable;
+
+  private String description;
 
 }

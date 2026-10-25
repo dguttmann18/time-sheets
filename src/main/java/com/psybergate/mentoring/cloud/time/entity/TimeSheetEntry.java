@@ -25,8 +25,9 @@ public class TimeSheetEntry extends BaseEntity {
   @JoinColumn(name = "project_id")
   private Project project;
 
-  private double hours;
-
   private boolean billable;
 
+  private double hours;
+
+  private String description;
 }
