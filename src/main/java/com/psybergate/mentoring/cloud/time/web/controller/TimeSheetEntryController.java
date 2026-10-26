@@ -1,7 +1,6 @@
 package com.psybergate.mentoring.cloud.time.web.controller;
 
 import com.psybergate.mentoring.cloud.time.dto.request.TimeSheetEntryRequest;
-import com.psybergate.mentoring.cloud.time.dto.response.ProjectResponse;
 import com.psybergate.mentoring.cloud.time.dto.response.TimeSheetEntryResponse;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
 import lombok.AllArgsConstructor;
@@ -27,12 +26,17 @@ public class TimeSheetEntryController {
   }
 
   @PatchMapping("/update/{id}")
-  public void updateTimeSheetEntry(@RequestBody TimeSheetEntryRequest request, @PathVariable Long id) {
-    service.update(request, id);
+  public TimeSheetEntryResponse updateTimeSheetEntry(@RequestBody TimeSheetEntryRequest request, @PathVariable Long id) {
+    return service.update(request, id);
   }
 
   @GetMapping("/{id}")
   public TimeSheetEntryResponse getTimeSheetEntry(@PathVariable Long id) {
     return service.get(id);
+  }
+
+  @DeleteMapping("/{id}")
+  public void deleteTimeSheetEntry(@PathVariable Long id) {
+    service.delete(id);
   }
 }
