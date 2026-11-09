@@ -17,7 +17,7 @@ public class TimeSheetEntryController {
 
   @GetMapping("/all")
   public List<TimeSheetEntryResponse> getAllTimesheets() {
-    return service.getAll();
+    return service.getAllActive();
   }
 
   @PostMapping("/new")

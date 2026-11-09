@@ -37,7 +37,6 @@ public class ProjectController {
 
   @DeleteMapping("/{id}")
   public void deleteProject(@PathVariable Long id) {
-    System.out.println("Inside delete endpoint");
     service.delete(id);
   }
 

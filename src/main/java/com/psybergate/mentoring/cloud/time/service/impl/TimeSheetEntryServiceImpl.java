@@ -32,6 +32,7 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
     TimeSheetEntry entity = mapper.toEntity(request);
     Project project = projectRepository.findById(request.getProjectId())
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + request.getProjectId() + "} not found"));
+    entity.setProject(project);
     return mapper.toResponse(repository.save(entity));
   }
 
@@ -46,7 +47,6 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
     Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + projectId + "} not found"));
     entity.setProject(project);
-
     return mapper.toResponse(entity);
   }
 
@@ -66,6 +66,11 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
   @Override
   public List<TimeSheetEntryResponse> getAll() {
     return mapper.toResponseList(repository.findAll());
+  }
+
+  @Override
+  public List<TimeSheetEntryResponse> getAllActive() {
+    return mapper.toResponseList(repository.findByActiveTrue());
   }
 
   @Override
