@@ -18,6 +18,8 @@ public interface TimeSheetEntryService {
 
   List<TimeSheetEntryResponse> getAll();
 
+  List<TimeSheetEntryResponse> getAllActive();
+
   List<TimeSheetEntryResponse> getAllContaining(String value);
 
   List<TimeSheetEntryResponse> getAllOnDate(LocalDate date);

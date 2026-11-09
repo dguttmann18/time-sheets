@@ -32,6 +32,7 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
     TimeSheetEntry entity = mapper.toEntity(request);
     Project project = projectRepository.findById(request.getProjectId())
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + request.getProjectId() + "} not found"));
+    entity.setProject(project);
     return mapper.toResponse(repository.save(entity));
   }
 
@@ -46,13 +47,15 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
     Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + projectId + "} not found"));
     entity.setProject(project);
-
     return mapper.toResponse(entity);
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
-
+    TimeSheetEntry entity = repository.findByIdAndActiveTrue(id)
+            .orElseThrow(() -> new EntityNotFoundException("Time sheet entry with id{" + id + "} not found"));
+    entity.setActive(false);
   }
 
   @Override
@@ -66,12 +69,17 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
   }
 
   @Override
+  public List<TimeSheetEntryResponse> getAllActive() {
+    return mapper.toResponseList(repository.findByActiveTrue());
+  }
+
+  @Override
   public List<TimeSheetEntryResponse> getAllContaining(String value) {
     return List.of();
   }
 
   @Override
   public List<TimeSheetEntryResponse> getAllOnDate(LocalDate date) {
-    return List.of();
+    return mapper.toResponseList(repository.findByActiveTrueAndDateOfEntry(date));
   }
 }
