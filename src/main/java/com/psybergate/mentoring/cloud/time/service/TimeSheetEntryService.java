@@ -23,4 +23,6 @@ public interface TimeSheetEntryService {
   List<TimeSheetEntryResponse> getAllContaining(String value);
 
   List<TimeSheetEntryResponse> getAllOnDate(LocalDate date);
+
+  List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay);
 }

@@ -82,4 +82,9 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
   public List<TimeSheetEntryResponse> getAllOnDate(LocalDate date) {
     return mapper.toResponseList(repository.findByActiveTrueAndDateOfEntry(date));
   }
+
+  @Override
+  public List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay) {
+    return mapper.toResponseList(repository.findByActiveTrueAndDateOfEntryBetween(firstDay, lastDay));
+  }
 }
