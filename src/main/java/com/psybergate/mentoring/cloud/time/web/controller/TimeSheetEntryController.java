@@ -6,6 +6,7 @@ import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,6 +19,11 @@ public class TimeSheetEntryController {
   @GetMapping("/all")
   public List<TimeSheetEntryResponse> getAllTimesheets() {
     return service.getAllActive();
+  }
+
+  @GetMapping("/{firstDay}/{lastDay}")
+  public List<TimeSheetEntryResponse> getAllTimesheetsInRange(@PathVariable LocalDate firstDay, @PathVariable LocalDate lastDay) {
+    return service.getAllInRange(firstDay, lastDay);
   }
 
   @PostMapping("/new")
