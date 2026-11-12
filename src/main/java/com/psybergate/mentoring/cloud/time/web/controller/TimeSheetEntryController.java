@@ -4,11 +4,13 @@ import com.psybergate.mentoring.cloud.time.dto.request.TimeSheetEntryRequest;
 import com.psybergate.mentoring.cloud.time.dto.response.TimeSheetEntryResponse;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Log
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/time_sheet_entry")
@@ -21,9 +23,15 @@ public class TimeSheetEntryController {
     return service.getAllActive();
   }
 
-  @GetMapping("/{firstDay}/{lastDay}")
-  public List<TimeSheetEntryResponse> getAllTimesheetsInRange(@PathVariable LocalDate firstDay, @PathVariable LocalDate lastDay) {
-    return service.getAllInRange(firstDay, lastDay);
+  @GetMapping("/{firstDay}/{lastDay}/{orderBy}/{isAscending}")
+  public List<TimeSheetEntryResponse> getAllTimesheetsInRange(
+          @PathVariable LocalDate firstDay,
+          @PathVariable LocalDate lastDay,
+          @PathVariable String orderBy,
+          @PathVariable boolean isAscending
+          ) {
+
+    return service.getAllInRange(firstDay, lastDay, orderBy, isAscending);
   }
 
   @PostMapping("/new")

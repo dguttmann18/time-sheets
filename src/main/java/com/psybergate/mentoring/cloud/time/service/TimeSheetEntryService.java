@@ -24,5 +24,5 @@ public interface TimeSheetEntryService {
 
   List<TimeSheetEntryResponse> getAllOnDate(LocalDate date);
 
-  List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay);
+  List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay, String orderBy, boolean isAscending);
 }

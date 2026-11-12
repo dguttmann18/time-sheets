@@ -10,6 +10,7 @@ import com.psybergate.mentoring.cloud.time.repository.TimeSheetEntryRepository;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +71,7 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
 
   @Override
   public List<TimeSheetEntryResponse> getAllActive() {
-    return mapper.toResponseList(repository.findByActiveTrue());
+    return null;
   }
 
   @Override
@@ -80,11 +81,15 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
 
   @Override
   public List<TimeSheetEntryResponse> getAllOnDate(LocalDate date) {
-    return mapper.toResponseList(repository.findByActiveTrueAndDateOfEntry(date));
+    return null;
   }
 
   @Override
-  public List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay) {
-    return mapper.toResponseList(repository.findByActiveTrueAndDateOfEntryBetween(firstDay, lastDay));
+  public List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay, String orderBy, boolean isAscending) {
+    List<TimeSheetEntry> list = isAscending
+            ? repository.findByActiveTrueAndDateOfEntryBetween(firstDay, lastDay, Sort.by(Sort.Direction.ASC, orderBy))
+            : repository.findByActiveTrueAndDateOfEntryBetween(firstDay, lastDay, Sort.by(Sort.Direction.DESC, orderBy));
+
+    return mapper.toResponseList(list);
   }
 }
