@@ -21,4 +21,5 @@ public interface TimeSheetEntryRepository extends JpaRepository<TimeSheetEntry, 
 
   List<TimeSheetEntry> findByActiveTrueAndDateOfEntry(LocalDate date);
 
+  List<TimeSheetEntry> findByLeaveApplicationIdAndActiveTrue(Long leaveApplicationId);
 }

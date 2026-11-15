@@ -1,5 +1,6 @@
 package com.psybergate.mentoring.cloud.time.service.impl;
 
+import com.psybergate.mentoring.cloud.time.config.LeaveProjectInitialiser;
 import com.psybergate.mentoring.cloud.time.dto.request.ProjectRequest;
 import com.psybergate.mentoring.cloud.time.dto.response.ProjectResponse;
 import com.psybergate.mentoring.cloud.time.entity.Project;
@@ -26,6 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public void save(ProjectRequest project) {
+    rejectReservedName(project.getName());
     Project entity = mapper.toEntity(project);
     repository.save(entity);
   }
@@ -36,6 +38,11 @@ public class ProjectServiceImpl implements ProjectService {
     Project entity = repository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + id + "} not found"));
 
+    if  (isLeaveProject(entity)) {
+      throw new IllegalStateException("The Leave project is managed by the system and cannot be changed");
+    }
+    rejectReservedName(request.getName());
+
     mapper.updateEntityFromRequest(request, entity);
   }
 
@@ -44,6 +51,9 @@ public class ProjectServiceImpl implements ProjectService {
   public void delete(Long id) {
     Project entity = repository.findByIdAndActiveTrue(id)
             .orElseThrow(() -> new EntityNotFoundException("Project with id{" + id + "} not found"));
+    if (isLeaveProject(entity)) {
+      throw new IllegalStateException("The Leave project is managed by the system and cannot be deleted");
+    }
     entity.setActive(false);
   }
 
@@ -62,5 +72,15 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public List<ProjectResponse> getAllContaining(String value) {
     return List.of();
+  }
+
+  private boolean isLeaveProject(Project project) {
+    return LeaveProjectInitialiser.LEAVE_PROJECT_NAME.equals(project.getName());
+  }
+
+  private void rejectReservedName(String name) {
+    if (name != null && LeaveProjectInitialiser.LEAVE_PROJECT_NAME.equalsIgnoreCase(name.trim())) {
+      throw new IllegalArgumentException("The project name '" + LeaveProjectInitialiser.LEAVE_PROJECT_NAME + "' is reserved for leave");
+    }
   }
 }

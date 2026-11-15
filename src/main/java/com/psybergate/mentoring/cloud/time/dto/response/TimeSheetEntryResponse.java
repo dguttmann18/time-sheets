@@ -29,4 +29,6 @@ public class TimeSheetEntryResponse {
 
   private String description;
 
+  private Long leaveApplicationId;
+
 }

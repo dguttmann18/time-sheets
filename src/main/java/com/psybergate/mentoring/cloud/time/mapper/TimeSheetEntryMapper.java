@@ -16,6 +16,7 @@ public interface TimeSheetEntryMapper {
   @Mapping(target = "updated", ignore = true)
   @Mapping(target = "active", ignore = true)
   @Mapping(target = "project", ignore = true)
+  @Mapping(target = "leaveApplicationId", ignore = true)
   TimeSheetEntry toEntity(TimeSheetEntryRequest request);
 
   @Mapping(target = "id", ignore = true)
@@ -23,6 +24,7 @@ public interface TimeSheetEntryMapper {
   @Mapping(target = "updated", ignore = true)
   @Mapping(target = "active", ignore = true)
   @Mapping(target = "project", ignore = true)
+  @Mapping(target = "leaveApplicationId", ignore = true)
   void updateEntityFromRequest(TimeSheetEntryRequest request, @MappingTarget TimeSheetEntry entity);
 
   TimeSheetEntryResponse toResponse(TimeSheetEntry entity);
