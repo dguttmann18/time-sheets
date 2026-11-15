@@ -1,5 +1,6 @@
 package com.psybergate.mentoring.cloud.time.web.controller;
 
+import com.psybergate.mentoring.cloud.time.dto.request.LeaveTimeSheetRequest;
 import com.psybergate.mentoring.cloud.time.dto.request.TimeSheetEntryRequest;
 import com.psybergate.mentoring.cloud.time.dto.response.TimeSheetEntryResponse;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/time_sheet_entry")
 public class TimeSheetEntryController {
-  
+
   private final TimeSheetEntryService service;
 
   @GetMapping("/all")
@@ -29,7 +30,7 @@ public class TimeSheetEntryController {
           @PathVariable LocalDate lastDay,
           @PathVariable String orderBy,
           @PathVariable boolean isAscending
-          ) {
+  ) {
 
     return service.getAllInRange(firstDay, lastDay, orderBy, isAscending);
   }
@@ -52,5 +53,15 @@ public class TimeSheetEntryController {
   @DeleteMapping("/{id}")
   public void deleteTimeSheetEntry(@PathVariable Long id) {
     service.delete(id);
+  }
+
+  @PostMapping("/leave")
+  public void addLeaveEntries(@RequestBody LeaveTimeSheetRequest request) {
+    service.createLeaveEntries(request);
+  }
+
+  @DeleteMapping("/leave/{leaveApplicationId}")
+  public void deleteLeaveEntries(@PathVariable Long leaveApplicationId) {
+    service.deleteLeaveEntries(leaveApplicationId);
   }
 }

@@ -1,5 +1,6 @@
 package com.psybergate.mentoring.cloud.time.service;
 
+import com.psybergate.mentoring.cloud.time.dto.request.LeaveTimeSheetRequest;
 import com.psybergate.mentoring.cloud.time.dto.request.TimeSheetEntryRequest;
 import com.psybergate.mentoring.cloud.time.dto.response.TimeSheetEntryResponse;
 
@@ -14,6 +15,10 @@ public interface TimeSheetEntryService {
 
   void delete(Long id);
 
+  void createLeaveEntries(LeaveTimeSheetRequest request);
+
+  void deleteLeaveEntries(Long leaveApplicationId);
+
   TimeSheetEntryResponse get(Long id);
 
   List<TimeSheetEntryResponse> getAll();
@@ -25,4 +30,5 @@ public interface TimeSheetEntryService {
   List<TimeSheetEntryResponse> getAllOnDate(LocalDate date);
 
   List<TimeSheetEntryResponse> getAllInRange(LocalDate firstDay, LocalDate lastDay, String orderBy, boolean isAscending);
+
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Data
 @Entity
@@ -30,4 +30,7 @@ public class TimeSheetEntry extends BaseEntity {
   private double hours;
 
   private String description;
+
+  @Column(name = "leave_application_id")
+  private Long leaveApplicationId;
 }
