@@ -4,7 +4,6 @@ import com.psybergate.mentoring.cloud.time.config.LeaveProjectInitialiser;
 import com.psybergate.mentoring.cloud.time.dto.request.ProjectRequest;
 import com.psybergate.mentoring.cloud.time.dto.response.ProjectResponse;
 import com.psybergate.mentoring.cloud.time.entity.Project;
-import com.psybergate.mentoring.cloud.time.entity.TimeSheetEntry;
 import com.psybergate.mentoring.cloud.time.mapper.ProjectMapper;
 import com.psybergate.mentoring.cloud.time.repository.ProjectRepository;
 import com.psybergate.mentoring.cloud.time.service.ProjectService;
@@ -35,10 +34,10 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public void update(ProjectRequest request, Long id) {
-    Project entity = repository.findById(id)
+    Project entity = repository.findByIdAndActiveTrue(id)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + id + "} not found"));
 
-    if  (isLeaveProject(entity)) {
+    if (isLeaveProject(entity)) {
       throw new IllegalStateException("The Leave project is managed by the system and cannot be changed");
     }
     rejectReservedName(request.getName());
@@ -50,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Transactional
   public void delete(Long id) {
     Project entity = repository.findByIdAndActiveTrue(id)
-            .orElseThrow(() -> new EntityNotFoundException("Project with id{" + id + "} not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Project with id {" + id + "} not found"));
     if (isLeaveProject(entity)) {
       throw new IllegalStateException("The Leave project is managed by the system and cannot be deleted");
     }
@@ -59,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public ProjectResponse get(Long id) {
-    Project entity = repository.findById(id)
+    Project entity = repository.findByIdAndActiveTrue(id)
             .orElseThrow(() -> new EntityNotFoundException("Project with id {" + id + "} not found"));
     return mapper.toResponse(entity);
   }
