@@ -9,11 +9,13 @@ import com.psybergate.mentoring.cloud.time.repository.ProjectRepository;
 import com.psybergate.mentoring.cloud.time.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -29,6 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
     rejectReservedName(project.getName());
     Project entity = mapper.toEntity(project);
     repository.save(entity);
+    log.info("Created project '{}'", entity.getName());
   }
 
   @Override
@@ -43,6 +46,7 @@ public class ProjectServiceImpl implements ProjectService {
     rejectReservedName(request.getName());
 
     mapper.updateEntityFromRequest(request, entity);
+    log.info("Updated project {} ('{}')", id, entity.getName());
   }
 
   @Override
@@ -54,6 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
       throw new IllegalStateException("The Leave project is managed by the system and cannot be deleted");
     }
     entity.setActive(false);
+    log.info("Deactivated project {} ('{}')", id, entity.getName());
   }
 
   @Override

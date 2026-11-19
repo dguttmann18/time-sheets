@@ -13,6 +13,7 @@ import com.psybergate.mentoring.cloud.time.repository.TimeSheetEntryRepository;
 import com.psybergate.mentoring.cloud.time.service.TimeSheetEntryService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
@@ -42,6 +44,7 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
       return;
     if (hours == 0) return;
     double leaveHours = Math.round(hours * accrualRate * 100) / 100.0;
+    log.debug("Accruing {}h leave for {}h on project '{}'", leaveHours, hours, project.getName());
     leaveClient.addLeaveHours(leaveHours);
   }
 
@@ -55,6 +58,8 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
     entity.setProject(project);
     TimeSheetEntry saved = repository.save(entity);
     accrueLeave(project, saved.getHours());
+    log.info("Created time sheet entry {} on project '{}' ({}h)",
+            saved.getId(), project.getName(), saved.getHours());
     return mapper.toResponse(saved);
   }
 
@@ -77,6 +82,8 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
     entity.setProject(newProject);
     accrueLeave(oldProject, -oldHours);
     accrueLeave(newProject, entity.getHours());
+    log.info("Updated time sheet entry {}: {}h on '{}' -> {}h on '{}'",
+            id, oldHours, oldProject.getName(), entity.getHours(), newProject.getName());
     return mapper.toResponse(entity);
   }
 
@@ -84,13 +91,15 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
   @Transactional
   public void delete(Long id) {
     TimeSheetEntry entity = repository.findByIdAndActiveTrue(id)
-            .orElseThrow(() -> new EntityNotFoundException("Time sheet entry with id{" + id + "} not found"));
+            .orElseThrow(() -> new EntityNotFoundException("Time sheet entry with id {" + id + "} not found"));
     if (entity.getLeaveApplicationId() != null)
       throw new IllegalStateException(
               "Leave entries must be changed through the leave application"
       );
     accrueLeave(entity.getProject(), entity.getHours() * -1);
     entity.setActive(false);
+    log.info("Deleted time sheet entry {} ({}h on '{}')",
+            id, entity.getHours(), entity.getProject().getName());
   }
 
   @Override
@@ -115,13 +124,17 @@ public class TimeSheetEntryServiceImpl implements TimeSheetEntryService {
             .map(day -> toLeaveEntry(day, hoursPerDay, leaveProject, request))
             .toList();
     repository.saveAll(entries);
+    log.info("Created {} leave entries for leave application {}",
+            entries.size(), request.getLeaveApplicationId());
   }
 
   @Override
   @Transactional
   public void deleteLeaveEntries(Long leaveApplicationId) {
-    repository.findByLeaveApplicationIdAndActiveTrue(leaveApplicationId)
-            .forEach(entry -> entry.setActive(false));
+    List<TimeSheetEntry> entries = repository.findByLeaveApplicationIdAndActiveTrue(leaveApplicationId);
+    entries.forEach(entry -> entry.setActive(false));
+    log.info("Removed {} leave entries for leave application {}",
+            entries.size(), leaveApplicationId);
   }
 
   @Override
